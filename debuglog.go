@@ -7,8 +7,8 @@ import (
 	"sync"
 )
 
-// DebugLogger is a logger for debug.
-type DebugLogger struct {
+// Logger is a logger for debug.
+type Logger struct {
 	out    io.Writer
 	debug  bool
 	prefix string
@@ -16,8 +16,8 @@ type DebugLogger struct {
 }
 
 // New creates a new Debug Logger.
-func New(w io.Writer) *DebugLogger {
-	dl := &DebugLogger{out: w, prefix: "[DEBUG] "}
+func New(w io.Writer) *Logger {
+	dl := &Logger{out: w, prefix: "[DEBUG] "}
 
 	if len(os.Getenv("DEBUG")) != 0 {
 		dl.debug = true
@@ -27,23 +27,23 @@ func New(w io.Writer) *DebugLogger {
 }
 
 // Printf print log with format if DEBUG env specified.
-func (dl *DebugLogger) Printf(format string, a ...interface{}) (n int, err error) {
-	if dl.debug {
-		dl.mu.Lock()
-		defer dl.mu.Unlock()
-		return fmt.Fprintf(dl.out, dl.prefix+format, a...)
+func (l *Logger) Printf(format string, a ...interface{}) (n int, err error) {
+	if l.debug {
+		l.mu.Lock()
+		defer l.mu.Unlock()
+		return fmt.Fprintf(l.out, l.prefix+format, a...)
 	}
 
 	return 0, nil
 }
 
 // Print print log if DEBUG env specified.
-func (dl *DebugLogger) Print(a ...interface{}) (n int, err error) {
-	if dl.debug {
-		a = append([]interface{}{dl.prefix}, a...)
-		dl.mu.Lock()
-		defer dl.mu.Unlock()
-		return fmt.Fprint(dl.out, a...)
+func (l *Logger) Print(a ...interface{}) (n int, err error) {
+	if l.debug {
+		a = append([]interface{}{l.prefix}, a...)
+		l.mu.Lock()
+		defer l.mu.Unlock()
+		return fmt.Fprint(l.out, a...)
 	}
 
 	return 0, nil
