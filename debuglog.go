@@ -1,24 +1,21 @@
 package debuglog
 
 import (
-	"fmt"
 	"io"
+	"log"
 	"os"
-	"sync"
 )
 
 // Logger is a logger for debug.
 type Logger struct {
-	out    io.Writer
+	logger *log.Logger
 	debug  bool
-	prefix string
-	mu     sync.Mutex
 }
 
 // New creates a new Debug Logger.
 func New(w io.Writer) *Logger {
-	dl := &Logger{out: w, prefix: "[DEBUG] "}
-
+	dl := &Logger{}
+	dl.logger = log.New(w, "[DEBUG] ", 0)
 	if len(os.Getenv("DEBUG")) != 0 {
 		dl.debug = true
 	}
@@ -27,24 +24,19 @@ func New(w io.Writer) *Logger {
 }
 
 // Printf print log with format if DEBUG env specified.
-func (l *Logger) Printf(format string, a ...interface{}) (n int, err error) {
+func (l *Logger) Printf(format string, a ...interface{}) {
 	if l.debug {
-		l.mu.Lock()
-		defer l.mu.Unlock()
-		return fmt.Fprintf(l.out, l.prefix+format, a...)
+		l.logger.Printf(format, a...)
 	}
 
-	return 0, nil
+	return
 }
 
 // Print print log if DEBUG env specified.
-func (l *Logger) Print(a ...interface{}) (n int, err error) {
+func (l *Logger) Print(a ...interface{}) {
 	if l.debug {
-		a = append([]interface{}{l.prefix}, a...)
-		l.mu.Lock()
-		defer l.mu.Unlock()
-		return fmt.Fprint(l.out, a...)
+		l.logger.Print(a...)
 	}
 
-	return 0, nil
+	return
 }

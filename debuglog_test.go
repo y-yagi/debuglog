@@ -13,7 +13,7 @@ func TestDebugEnvSpecified(t *testing.T) {
 	dl := New(out)
 
 	dl.Print("Debug message")
-	expected := "[DEBUG] Debug message"
+	expected := "[DEBUG] Debug message\n"
 	if out.String() != expected {
 		t.Errorf("Expect is %q, but %q", expected, out.String())
 	}
@@ -21,7 +21,7 @@ func TestDebugEnvSpecified(t *testing.T) {
 	out.Reset()
 
 	dl.Printf("Debug %v %v", "message", "with format")
-	expected = "[DEBUG] Debug message with format"
+	expected = "[DEBUG] Debug message with format\n"
 	if out.String() != expected {
 		t.Errorf("Expect is %q, but %q", expected, out.String())
 	}
