@@ -2,8 +2,11 @@ package debuglog
 
 import (
 	"bytes"
+	"fmt"
+	"log"
 	"os"
 	"testing"
+	"time"
 )
 
 func TestDebugEnvSpecified(t *testing.T) {
@@ -43,6 +46,21 @@ func TestDebugEnvNotSpecified(t *testing.T) {
 
 	dl.Printf("Debug %v %v", "message", "with format")
 	expected = ""
+	if out.String() != expected {
+		t.Errorf("Expect is %q, but %q", expected, out.String())
+	}
+}
+
+func TestWithFlag(t *testing.T) {
+	os.Setenv("DEBUG", "1")
+
+	out := new(bytes.Buffer)
+	dl := New(out, Flag(log.Ldate))
+
+	dl.Print("Debug message")
+
+	year, month, day := time.Now().Date()
+	expected := fmt.Sprintf("[DEBUG] %d/%d/%d Debug message\n", year, month, day)
 	if out.String() != expected {
 		t.Errorf("Expect is %q, but %q", expected, out.String())
 	}
