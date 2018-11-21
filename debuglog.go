@@ -43,8 +43,6 @@ func (l *Logger) Printf(format string, a ...interface{}) {
 	if l.debug {
 		l.logger.Printf(format, a...)
 	}
-
-	return
 }
 
 // Print print log if DEBUG env specified.
@@ -52,6 +50,4 @@ func (l *Logger) Print(a ...interface{}) {
 	if l.debug {
 		l.logger.Print(a...)
 	}
-
-	return
 }
