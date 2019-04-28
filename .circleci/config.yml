@@ -9,30 +9,24 @@ test: &test
           go get -u golang.org/x/lint/golint
           golint -set_exit_status
     - run:
-        name: Run megacheck
+        name: Run staticcheck
         command: |
-          go get -u honnef.co/go/tools/cmd/megacheck
-          megacheck -simple.exit-non-zero
+          go get -u honnef.co/go/tools/cmd/staticcheck
+          staticcheck
     - run:
         name: Run tests
         command: go test -v
 
 jobs:
-  go-1.9-test:
-    docker:
-      - image: circleci/golang:1.9
-    working_directory: /go/src/github.com/y-yagi/debuglog
-    <<: *test
-
-  go-1.10-test:
-    docker:
-      - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/y-yagi/debuglog
-    <<: *test
-
   go-1.11-test:
     docker:
       - image: circleci/golang:1.11
+    working_directory: /go/src/github.com/y-yagi/debuglog
+    <<: *test
+
+  go-1.12-test:
+    docker:
+      - image: circleci/golang:1.12
     working_directory: /go/src/github.com/y-yagi/debuglog
     <<: *test
 
@@ -40,6 +34,5 @@ workflows:
   version: 2
   build:
     jobs:
-      - go-1.9-test
-      - go-1.10-test
       - go-1.11-test
+      - go-1.12-test
