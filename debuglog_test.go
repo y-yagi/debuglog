@@ -60,7 +60,7 @@ func TestWithFlag(t *testing.T) {
 	dl.Print("Debug message")
 
 	year, month, day := time.Now().Date()
-	expected := fmt.Sprintf("[DEBUG] %d/%d/%d Debug message\n", year, month, day)
+	expected := fmt.Sprintf("[DEBUG] %d/%02d/%02d Debug message\n", year, month, day)
 	if out.String() != expected {
 		t.Errorf("Expect is %q, but %q", expected, out.String())
 	}
