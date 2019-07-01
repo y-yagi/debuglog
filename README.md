@@ -17,7 +17,7 @@ import (
 
 func main() {
 	logger := debuglog.New(os.Stdout)
-	debuglog.Printf("Debug: %v\n", 1) // Nothing output
+	logger.Printf("Debug: %v\n", 1) // Nothing output
 
 	os.Setenv("DEBUG", "1")
 
