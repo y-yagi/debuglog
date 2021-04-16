@@ -66,9 +66,16 @@ func TestWithFlag(t *testing.T) {
 	}
 }
 
-func TestMain(m *testing.M) {
-	beforeEnv := os.Getenv("DEBUG")
-	result := m.Run()
-	os.Setenv("DEBUG", beforeEnv)
-	os.Exit(result)
+func TestWithEnvKey(t *testing.T) {
+	os.Setenv("DEBUG", "")
+	os.Setenv("CUSTOM_DEBUG_KEY", "1")
+
+	out := new(bytes.Buffer)
+	dl := New(out, EnvKey("CUSTOM_DEBUG_KEY"))
+
+	dl.Print("Debug message")
+	expected := "[DEBUG] Debug message\n"
+	if out.String() != expected {
+		t.Errorf("Expect is %q, but %q", expected, out.String())
+	}
 }
