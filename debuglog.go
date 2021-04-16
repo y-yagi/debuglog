@@ -9,6 +9,7 @@ import (
 // Logger is a logger for debug.
 type Logger struct {
 	logger *log.Logger
+	envkey string
 	debug  bool
 }
 
@@ -23,16 +24,25 @@ func Flag(f int) Option {
 	}
 }
 
+// EnvKey is a flag for specifying the environment key.
+func EnvKey(k string) Option {
+	return func(l *Logger) error {
+		l.envkey = k
+		return nil
+	}
+}
+
 // New creates a new Debug Logger.
 func New(w io.Writer, options ...Option) *Logger {
-	dl := &Logger{}
+	dl := &Logger{envkey: "DEBUG"}
 	dl.logger = log.New(w, "[DEBUG] ", 0)
-	if len(os.Getenv("DEBUG")) != 0 {
-		dl.debug = true
-	}
 
 	for _, option := range options {
 		option(dl)
+	}
+
+	if len(os.Getenv(dl.envkey)) != 0 {
+		dl.debug = true
 	}
 
 	return dl
