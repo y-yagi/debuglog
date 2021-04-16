@@ -1,8 +1,8 @@
 # debuglog
 
-debuglog is a logger for debugging. It outputs log only when `DEBUG` env is specified.
+[![Build Status](https://github.com/y-yagi/debuglog/actions/workflows/ci.yml/badge.svg)](https://github.com/y-yagi/debuglog/actions/workflows/ci.yml)
 
-[![CircleCI](https://circleci.com/gh/y-yagi/debuglog.svg?style=svg)](https://circleci.com/gh/y-yagi/debuglog)
+debuglog is a logger for debugging. It outputs log only when `DEBUG` env is specified.
 
 ## Usage
 
